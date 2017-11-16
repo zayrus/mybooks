@@ -13,9 +13,13 @@ class ListBooks extends Component {
     return books.filter( (book) => book.shelf === header ) 
   }
   
+  dataToUpdate = (book, shelf) => {
+    this.props.onUpdateBook(book, shelf)
+  }
+  
   render() {
         const { books } = this.props
-        console.log(books)
+
         return (
           <div className="list-books">
             <div className="list-books-title">
@@ -23,9 +27,9 @@ class ListBooks extends Component {
             </div>
     
             <div className="list-books-content">
-              <Bookshelf books={ this.filterByShelf(books, 'currentlyReading')} header='Currently Reading'/>
-              <Bookshelf books={ this.filterByShelf(books, 'wantToRead')} header='Want to Read'/>
-              <Bookshelf books={ this.filterByShelf(books, 'read')} header='Read'/>
+              <Bookshelf bookshelfUpdate={ this.dataToUpdate } books={ this.filterByShelf(books, 'currentlyReading')} header='Currently Reading'/>
+              <Bookshelf bookshelfUpdate={ this.dataToUpdate } books={ this.filterByShelf(books, 'wantToRead')} header='Want to Read'/>
+              <Bookshelf bookshelfUpdate={ this.dataToUpdate } books={ this.filterByShelf(books, 'read')} header='Read'/>
             </div>
             
             <div className="open-search">

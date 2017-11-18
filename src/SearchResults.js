@@ -9,9 +9,10 @@ class SearchResults extends Component {
     render() {
         const { books } = this.props
         let results = null
-
+        const header = 'Results for : ' + this.props.query
+        
         if (books.length) {
-            results = <Bookshelf bookshelfUpdate={ this.dataToUpdate } books={ books } header='Finded Books'/>
+            results = <Bookshelf bookshelfUpdate={ this.dataToUpdate } books={ books } header={ header }/>
         }
         
         return (

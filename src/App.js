@@ -8,7 +8,6 @@ import SearchBooks from './SearchBooks'
 class BooksApp extends React.Component {
   state = {
     books: [],
-    query: '',
     results: []
   }
   emptybooks = () => this.setState({ results : [] })
@@ -39,27 +38,23 @@ class BooksApp extends React.Component {
       this.setState({ books: books })
     })
   }
-  
-  searchBook = (query) => {
-    if (query.length !== 0) {
-      BooksAPI.search(query, 20).then( (results) => {
-        if (results.length > 0) {
-          const pairBooks = results.map(searchResult => {
-            this.state.books.forEach(book => {
-              if (book.id === searchResult.id) {
-                searchResult.shelf = book.shelf
-              }
-            })
-            return searchResult
+
+  searchBooks = (query) => {
+    BooksAPI.search(query, 20).then( (results) => {
+      if (results.length > 0) {
+        const pairBooks = results.map(searchResult => {
+          this.state.books.forEach(book => {
+            if (book.id === searchResult.id) {
+              searchResult.shelf = book.shelf
+            }
           })
-          this.setState({ results: pairBooks })
-        }
-      })
-    } else {
-      this.emptybooks()
-    }
+          return searchResult
+        })
+        this.setState({ results: pairBooks })
+      }
+    })
   }
-  
+
   render() {
     return (
       <div className="app">
@@ -69,10 +64,9 @@ class BooksApp extends React.Component {
         <Route path='/search' render={() => (
           <SearchBooks 
             books={ this.state.results }
-            query={ this.query }
-            handleSearch={ this.searchBook }
             onUpdateBook={ this.updateBooksFromSearch }
             emptybooks={ this.emptybooks }
+            searchBooks={ this.searchBooks }
           />
         )}/>
 

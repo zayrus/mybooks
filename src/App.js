@@ -11,6 +11,7 @@ class BooksApp extends React.Component {
     query: '',
     results: []
   }
+  emptybooks = () => this.setState({ results : [] })
 
   componentDidMount() {
     this.getBooks()
@@ -29,10 +30,19 @@ class BooksApp extends React.Component {
   }
   
   searchBook = (query) => {
-    console.log(query)
-    BooksAPI.search(query, 20).then( (results) => {
-      this.setState({ results: results})
-    })
+      BooksAPI.search(query, 20).then( (results) => {
+        if (results.length > 0) {
+          const pairBooks = results.map(searchResult => {
+            this.state.books.forEach(book => {
+              if (book.id === searchResult.id) {
+                searchResult.shelf = book.shelf
+              }
+            })
+            return searchResult
+          })
+          this.setState({ results: pairBooks })
+        }
+      })
   }
   
   render() {
@@ -47,6 +57,7 @@ class BooksApp extends React.Component {
             query={ this.query }
             handleSearch={ this.searchBook }
             onUpdateBook={ this.updateBookShelf }
+            emptybooks={ this.emptybooks }
           />
         )}/>
 

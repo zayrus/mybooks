@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import SearchResults from './SearchResults'
 
 class SearchBooks extends Component {
+    componentDidMount() {
+        this.props.emptybooks()
+    }
 
     selectedBook = (book, shelf) => {
         this.props.onUpdateBook(book, shelf)

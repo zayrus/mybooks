@@ -41,6 +41,7 @@ class BooksApp extends React.Component {
   }
   
   searchBook = (query) => {
+    if (query.length !== 0) {
       BooksAPI.search(query, 20).then( (results) => {
         if (results.length > 0) {
           const pairBooks = results.map(searchResult => {
@@ -54,6 +55,9 @@ class BooksApp extends React.Component {
           this.setState({ results: pairBooks })
         }
       })
+    } else {
+      this.emptybooks()
+    }
   }
   
   render() {

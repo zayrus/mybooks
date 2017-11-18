@@ -17,6 +17,17 @@ class BooksApp extends React.Component {
     this.getBooks()
   }
 
+  updateBooksFromSearch = (book, shelf) => {
+    const updateResultShelf = this.state.results.map( (resultBook) => {
+      if (resultBook.id === book.id) {
+        resultBook.shelf = shelf
+      }
+      return resultBook
+    })
+    this.setState({ results: updateResultShelf })
+    this.updateBookShelf(book, shelf)
+  }
+
   updateBookShelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then( () => {
       this.getBooks()
@@ -56,7 +67,7 @@ class BooksApp extends React.Component {
             books={ this.state.results }
             query={ this.query }
             handleSearch={ this.searchBook }
-            onUpdateBook={ this.updateBookShelf }
+            onUpdateBook={ this.updateBooksFromSearch }
             emptybooks={ this.emptybooks }
           />
         )}/>

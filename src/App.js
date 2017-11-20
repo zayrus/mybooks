@@ -8,7 +8,8 @@ import SearchBooks from './SearchBooks'
 class BooksApp extends React.Component {
   state = {
     books: [],
-    results: []
+    results: [],
+    error: false
   }
   emptybooks = () => this.setState({ results : [] })
 
@@ -45,6 +46,12 @@ class BooksApp extends React.Component {
 
   searchBooks = (query) => {
     BooksAPI.search(query, 20).then( (results) => {
+      if (results.error) {
+        this.setState({ error: true })
+      } else {
+        this.setState({ error: false })
+      }
+
       if (results.length > 0) {
         const pairBooks = results.map(searchResult => {
           this.state.books.forEach(book => {
@@ -55,6 +62,8 @@ class BooksApp extends React.Component {
           return searchResult
         })
         this.setState({ results: pairBooks })
+      } else {
+        this.emptybooks()
       }
     })
   }
@@ -71,6 +80,7 @@ class BooksApp extends React.Component {
             onUpdateBook={ this.updateBooksFromSearch }
             emptybooks={ this.emptybooks }
             searchBooks={ this.searchBooks }
+            error={ this.state.error }
           />
         )}/>
 

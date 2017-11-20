@@ -7,12 +7,18 @@ class SearchResults extends Component {
         this.props.findedBooks(book, shelf)
     }
     render() {
-        const { books } = this.props
+        const { books, error } = this.props
+
         let results = null
         const header = 'Results for : ' + this.props.query
         
         if (books.length) {
             results = <Bookshelf bookshelfUpdate={ this.dataToUpdate } books={ books } header={ header }/>
+        }
+
+        if (error && this.props.query !=='') {
+            const error = 'There are no results for: ' + this.props.query
+            results = <Bookshelf books={ books } header={ error }/>
         }
         
         return (

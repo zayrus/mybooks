@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import SearchResults from './SearchResults'
+import { Debounce } from 'react-throttle'
 
 class SearchBooks extends Component {
     state = {
@@ -26,7 +27,7 @@ class SearchBooks extends Component {
     }
 
     render(){
-        const { books } = this.props
+        const { books, error } = this.props
         const { query } = this.state
 
         return (
@@ -34,17 +35,19 @@ class SearchBooks extends Component {
                 <div className="search-books-bar">
                     <Link to='/' className="close-search" >Close</Link>
                         <div className="search-books-input-wrapper">
-                            <input
-                                type="text"
-                                placeholder="Search by title or author"
-                                value={query}
-                                onChange={ (event) => this.handleSearch(event.target.value)}
-                            />
+
+                            <Debounce time="800"  handler="onChange">
+                                <input 
+                                    type="text"
+                                    placeholder="Search by title or author"
+                                    onChange={(event) => this.handleSearch(event.target.value)}
+                                />
+                            </Debounce>
                         </div>
                 </div>
-                <SearchResults query={ query } findedBooks={ this.selectedBook }  books={ books } />
+                <SearchResults error={ error } query={ query } findedBooks={ this.selectedBook }  books={ books } />
             </div>
         )
     }
 }
-export default SearchBooks;
+export default SearchBooks

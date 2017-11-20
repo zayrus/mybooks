@@ -19,10 +19,14 @@ class BooksApp extends React.Component {
   updateBooksFromSearch = (book, shelf) => {
     const updateResultShelf = this.state.results.map( (resultBook) => {
       if (resultBook.id === book.id) {
-        resultBook.shelf = shelf
+        return {
+          ...resultBook,
+          shelf: shelf
+        }
       }
       return resultBook
     })
+
     this.setState({ results: updateResultShelf })
     this.updateBookShelf(book, shelf)
   }
